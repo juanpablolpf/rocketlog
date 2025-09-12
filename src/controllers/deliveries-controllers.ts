@@ -5,12 +5,12 @@ import { Prisma } from "@prisma/client"
 
 class DeliveriesController {
     async create(request: Request, response: Response){
-        const bodySvhema  = z.object({
+        const bodySchema  = z.object({
             user_id: z.string().uuid(),
             description: z.string(),
         })
 
-        const {user_id, description} = bodySvhema.parse(request.body)
+        const {user_id, description} = bodySchema.parse(request.body)
 
         await prisma.delivery.create({
             data: {
