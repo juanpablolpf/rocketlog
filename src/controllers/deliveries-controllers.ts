@@ -1,8 +1,25 @@
 import {Request, Response} from "express"
+import {prisma} from "@/database/prisma"
+import {z} from "zod"
+import { Prisma } from "@prisma/client"
 
 class DeliveriesController {
-    create(request: Request, response: Response){
-        response.json({message: "ok"})
+    async create(request: Request, response: Response){
+        const bodySvhema  = z.object({
+            user_id: z.string().uuid(),
+            description: z.string(),
+        })
+
+        const {user_id, description} = bodySvhema.parse(request.body)
+
+        await prisma.delivery.create({
+            data: {
+                userId: user_id,
+                description
+            }
+        })
+
+        return response.status(201).json()
     }
 }
 
